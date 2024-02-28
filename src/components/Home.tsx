@@ -9,7 +9,7 @@ const Home: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [imageURL, setImageURL] = useState("");
   const { user } = useContext(AppContext)!;
-  const CLIENT_URL = "http://localhost:5173/pic/";
+  const CLIENT_URL = "https://image-uploader-d16d1.firebaseapp.com/pic/";
   const navigate = useNavigate();
   useEffect(() => {
     if (!user) {
