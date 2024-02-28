@@ -3,11 +3,15 @@ import { AppContext } from "../context/ContextProvider";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
-
+interface Image {
+  name: { stringValue: string };
+  url: { stringValue: string };
+  views: { integerValue: number };
+}
 const ImageGrid = () => {
   const navigate = useNavigate();
   const { email, user } = useContext(AppContext)!;
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<Image[]>([]);
   if (!user) {
     navigate("/signin");
   }
@@ -17,7 +21,8 @@ const ImageGrid = () => {
     );
     console.log(imageRef);
     setImages(
-      imageRef.docs.map((doc) => doc._document?.data?.value?.mapValue?.fields)
+      // @ts-expect-error : _document is present on the object
+      imageRef.docs.map((doc) => doc._document.data.value?.mapValue?.fields)
     );
   };
   useEffect(() => {

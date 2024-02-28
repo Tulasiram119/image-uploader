@@ -51,7 +51,9 @@ const Home: React.FC = () => {
                 .catch((err) => {
                   console.log(err);
                 });
+              console.log(newDocumentRef);
             }
+            console.log(snapshot);
           });
         })
         .catch((error: unknown) => {

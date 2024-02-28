@@ -24,12 +24,13 @@ const ImageViewer: React.FC = () => {
     const imageRef = await getDocs(
       query(collection(db, "images"), where("name", "==", imageName))
     );
-    const fields = imageRef?.docs[0]?._document?.data?.value?.mapValue?.fields;
+    // @ts-expect-error : _document is present on the object 
+    const fields = imageRef?.docs[0]?._document.data.value?.mapValue?.fields;
     setImageURL(fields.url.stringValue);
     setViewCount(fields.views.integerValue);
     if (user?.email !== fields.email.stringValue || user === null) {
       await updateDoc(doc(db, "images", imageRef.docs[0].id), {
-        views: parseInt(parseInt(fields.views.integerValue) + 1),
+        views: (parseInt(fields.views.integerValue) + 1).toString(),
       });
     }
   };
@@ -42,7 +43,9 @@ const ImageViewer: React.FC = () => {
     <section className="relative flex justify-center items-center m-10">
       <div className="h-auto z-10">
         <img src={imageURL} alt="" className="object-fit-cover" />
-        <h2 className="text-white bg-gray-500 p-5 mt-2 rounded-md">Views: {viewCount}</h2>
+        <h2 className="text-white bg-gray-500 p-5 mt-2 rounded-md">
+          Views: {viewCount}
+        </h2>
       </div>
     </section>
   );
